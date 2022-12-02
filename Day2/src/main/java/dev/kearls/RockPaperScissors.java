@@ -16,30 +16,30 @@ public class RockPaperScissors {
     private static final Integer DRAW_SCORE=3;
     private static final Integer WIN_SCORE=6;
 
-    // TODO define enums?  A for Rock, B for Paper, and C for Scissors for my opponent
-    // X for Rock, Y for Paper, and Z for Scissors
+
     public int getTotalScore(String filename) throws IOException {
         List<String> lines = getInput(filename);
         int totalScore = 0;
         for (String line : lines) {
             int scoreForThisRound = 0;
             var moves = line.split(" ");
-            var opponentsMove = moves[0];
-            var myMove = moves[1];
+            var opponentsMove = mapMove(moves[0]);
+            var myMove = mapMove(moves[1]);
 
             // The score for a single round is the score for the shape you selected (1 for Rock, 2 for Paper, and 3 for Scissors)
             // plus the score for the outcome of the round (0 if you lost, 3 if the round was a draw, and 6 if you won).
             scoreForThisRound = getScoreForMyMove(scoreForThisRound, myMove);
             var blah = getScoreVsOpponent(opponentsMove, myMove);
             scoreForThisRound += blah;
-            //System.out.println("Score for this round is: " + blah);
             totalScore += scoreForThisRound;
         }
 
         return totalScore;
     }
 
-    private Move mapMove(String value) {  // TODO test this
+    // A for Rock, B for Paper, and C for Scissors for my opponent
+    // X for Rock, Y for Paper, and Z for Scissors
+    private Move mapMove(String value) {
         Move move = null;
         switch (value) {
             case "A", "X": {
@@ -65,13 +65,12 @@ public class RockPaperScissors {
         for (String line : lines) {
             int scoreForThisRound = 0;
             var moves = line.split(" ");
-            var opponentsMove = moves[0];
+            var opponentsMove = mapMove(moves[0]);
             var outcome = moves[1];
 
             // The score for a single round is the score for the shape you selected (1 for Rock, 2 for Paper, and 3 for Scissors)
             // plus the score for the outcome of the round (0 if you lost, 3 if the round was a draw, and 6 if you won).
-            String myMove="";
-            myMove = getMyMove(opponentsMove, outcome);
+            var myMove = getMyMove(opponentsMove, outcome);
             scoreForThisRound = getScoreForMyMove(scoreForThisRound, myMove);
             var blah = getScoreVsOpponent(opponentsMove, myMove);
             scoreForThisRound += blah;
@@ -82,52 +81,46 @@ public class RockPaperScissors {
         return totalScore;
     }
 
-    private String getMyMove(String opponentsMove, String outcome) {
-        String myMove = "";
+    // X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win.
+    private Move getMyMove(Move opponentsMove, String outcome) {  // TODO should I map outcome too?
+        Move myMove = null;
         switch (outcome) {
-            // X means you need to lose, Y means you need to end the round in a draw, and Z means you need to win.
-            // A for Rock, B for Paper, and C for Scissors for my opponent
-            // X for Rock, Y for Paper, and Z for Scissors
-            // Rock wins against scissors; paper wins against rock; and scissors wins against paper.
-            case "X":  // TODO I need to lose
-                //scoreForThisRound += 1;
+            case "X":  // I need to lose
                 switch (opponentsMove) {
-                    case "A": // rock
-                        myMove = "Z";
+                    case ROCK: // rock
+                        myMove = Move.SCISSORS;
                         break;
-                    case "B": // paper
-                        myMove = "X";
+                    case PAPER: // paper
+                        myMove = Move.ROCK;
                         break;
-                    case "C": // scissors
-                        myMove = "Y";
+                    case SCISSORS: // scissors
+                        myMove = Move.PAPER;
                         break;
                 }
                 break;
             case "Y": // I need to draw
-                //scoreForThisRound += 2;
                 switch (opponentsMove) {
-                    case "A": // rock
-                        myMove = "X";
+                    case ROCK: // rock
+                        myMove = Move.ROCK;
                         break;
-                    case "B": // paper
-                        myMove = "Y";
+                    case PAPER: // paper
+                        myMove = Move.PAPER;
                         break;
-                    case "C": // scissors
-                        myMove = "Z";
+                    case SCISSORS: // scissors
+                        myMove = Move.SCISSORS;
                         break;
                 }
                 break;
             case "Z":  // I need to win
-                //scoreForThisRound += 3;
                 switch (opponentsMove) {
-                    case "A": // rock
-                        myMove = "Y";
+                    case ROCK: // rock
+                        myMove = Move.PAPER;
                         break;
-                    case "B": // paper
-                        myMove = "Z";
+                    case PAPER: // paper
+                        myMove = Move.SCISSORS;
                         break;
-                    case "C": // scissors
-                        myMove = "X";
+                    case SCISSORS: // scissors
+                        myMove = Move.ROCK;
                         break;
                 }
                 break;
@@ -137,26 +130,27 @@ public class RockPaperScissors {
         return myMove;
     }
 
-    private static int getScoreForMyMove(int scoreForThisRound, String myMove) {
+    private static int getScoreForMyMove(int scoreForThisRound, Move myMove) {
         switch (myMove) {
-            case "X":
+            case ROCK:
                 scoreForThisRound += 1;
                 break;
-            case "Y":
+            case PAPER:
                 scoreForThisRound += 2;
                 break;
-            case "Z":
+            case SCISSORS:
                 scoreForThisRound += 3;
                 break;
         }
         return scoreForThisRound;
     }
 
-    public int getScoreVsOpponent(String opponentsMove, String myMove) {
-        if ((myMove.equals("X") && opponentsMove.equals("A")) || (myMove.equals("Y") && opponentsMove.equals("B")) || (myMove.equals("Z") && opponentsMove.equals("C"))) {
+    public int getScoreVsOpponent(Move opponentsMove, Move myMove) {
+        if (myMove.equals(opponentsMove)) {
             return DRAW_SCORE;
-            // TODO does this cover all moves?  Could we put it in a map?
-        } else if ((myMove.equals("Y") && opponentsMove.equals("A")) || (myMove.equals("Z") && opponentsMove.equals("B")) || (myMove.equals("X") && opponentsMove.equals("C"))){
+        } else if ((myMove.equals(Move.ROCK) && opponentsMove.equals(Move.SCISSORS))
+                || (myMove.equals(Move.PAPER) && (opponentsMove.equals(Move.ROCK)))
+                || (myMove.equals(Move.SCISSORS) && opponentsMove.equals(Move.PAPER))) {
             return WIN_SCORE;
         } else {
             return LOST_SCORE;
