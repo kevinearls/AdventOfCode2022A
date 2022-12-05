@@ -5,7 +5,7 @@ import java.util.*;
 import static dev.kearls.Common.getInput;
 
 public class SupplyStacks {
-    public String calculateTopsOfStack(String filename) throws IOException {
+    public String calculateTopsOfStack(String filename, boolean canMoveMultiples) throws IOException {
         List<String> lines = getInput(filename);
 
         // First figure out where the input is split between starting state and move commands, and figure out how many stacks there are
@@ -29,8 +29,20 @@ public class SupplyStacks {
         for (Move move : moves) {
             var from = supplyStacks.get(move.getStartPosition() - 1);  // remember the input is 1-based
             var to = supplyStacks.get(move.getDestination()-1);
-            for (int q=0; q<move.getQuantity(); q++) {
-                to.push(from.pop());
+
+            if (canMoveMultiples) {
+                List<String> temp = new ArrayList<>();
+                for (int q = 0; q < move.getQuantity(); q++) {
+                    temp.add(from.pop());
+                }
+                Collections.reverse(temp);
+                for (String s : temp) {
+                    to.push(s);
+                }
+            } else {
+                for (int q = 0; q < move.getQuantity(); q++) {
+                    to.push(from.pop());
+                }
             }
         }
 

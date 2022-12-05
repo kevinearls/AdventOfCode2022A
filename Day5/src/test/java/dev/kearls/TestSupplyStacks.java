@@ -15,12 +15,23 @@ public class TestSupplyStacks {
 
     @Test
     public void testPart1Example() throws IOException {
-        assertEquals("CMZ", supplyStacks.calculateTopsOfStack(EXAMPLE_INPUT));
+        assertEquals("CMZ", supplyStacks.calculateTopsOfStack(EXAMPLE_INPUT, false));
     }
 
     @Test
     public void testPart1() throws IOException {
         var wtf = new ArrayDeque<String>();
-        assertEquals("PTWLTDSJV", supplyStacks.calculateTopsOfStack(TEST_INPUT));
+        assertEquals("PTWLTDSJV", supplyStacks.calculateTopsOfStack(TEST_INPUT, false));
+    }
+
+    @Test
+    public void testPart2Example() throws IOException {
+        assertEquals("MCD", supplyStacks.calculateTopsOfStack(EXAMPLE_INPUT, true));
+    }
+
+    @Test
+    public void testPart2() throws IOException {
+        var wtf = new ArrayDeque<String>();
+        assertEquals("WZMFVGGZP", supplyStacks.calculateTopsOfStack(TEST_INPUT, true));
     }
 }
