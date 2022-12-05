@@ -62,7 +62,6 @@ public class SupplyStacks {
 
     private static List<Deque<String>> getSupplyStacks(List<String> lines, int stackCount, int maxHeight) {
         int index;
-        String line;
         List<Deque<String>> supplyStacks = new ArrayList<>();
         for (int i = 0; i < stackCount; i++) {
             supplyStacks.add(new ArrayDeque<String>());
@@ -70,7 +69,7 @@ public class SupplyStacks {
 
         index = maxHeight - 1;
         while (index >= 0) {
-            line = lines.get(index);
+            var line = lines.get(index);
             // Here we need to split by position, taking 3 characters at a time.....
             for (int j = 0; j < stackCount; j++) {
                 var firstChar = j * 4;
