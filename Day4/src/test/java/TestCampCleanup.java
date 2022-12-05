@@ -10,8 +10,8 @@ public class TestCampCleanup {
     private static final String TEST_INPUT = "src/main/resources/input.txt";
     private final CampCleanup campCleanup = new CampCleanup();
     @Test
-    public void testAssignmentOverlaps() {
-        var first = new Assignment(2, 4);
+    public void testAssignmentFullyOverlaps() {
+        var first = new Assignment("2", "4");
         var second = new Assignment(6, 8);
         assertFalse(first.fullyOverlaps(second));
         assertFalse(second.fullyOverlaps(first));
@@ -28,6 +28,14 @@ public class TestCampCleanup {
     }
 
     @Test
+    public void testAssignmentOverlapsAtAll() {
+        var first = new Assignment("2", "4");
+        var second = new Assignment(6, 8);
+        assertFalse(first.overlapsAtAll(second));
+        assertFalse(second.overlapsAtAll(first));
+    }
+
+    @Test
     public void testPart1Example() throws IOException {
         assertEquals(2, campCleanup.countFullOverlaps(EXAMPLE_INPUT));
     }
@@ -35,6 +43,16 @@ public class TestCampCleanup {
     @Test
     public void testPart1() throws IOException {
         assertEquals(511, campCleanup.countFullOverlaps(TEST_INPUT));
+    }
+
+    @Test
+    public void testPart2Example() throws IOException {
+        assertEquals(4, campCleanup.countOverlapsAtAll(EXAMPLE_INPUT));
+    }
+
+    @Test
+    public void testPart2() throws IOException {
+        assertEquals(821, campCleanup.countOverlapsAtAll(TEST_INPUT));
     }
 
 
