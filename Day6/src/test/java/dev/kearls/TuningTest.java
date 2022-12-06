@@ -15,10 +15,9 @@ public class TuningTest {
     @Test
     public void testHasRepeatingCharacters() {
         Assert.assertFalse(tuning.hasRepeatingCharacters("abcd"));
-        Assert.assertTrue("Can I put a message here?", tuning.hasRepeatingCharacters("abba"));
+        Assert.assertTrue(tuning.hasRepeatingCharacters("abba"));
     }
 
-    // Useing test data from part 1
     @Test
     public void testPart1ExampleData() {
         Assert.assertEquals(7, tuning.findFirstMarker("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 4));
@@ -33,6 +32,22 @@ public class TuningTest {
         List<String> input = getInput(TEST_INPUT);
         Assert.assertEquals(1, input.size());
         Assert.assertEquals(1640, tuning.findFirstMarker(input.get(0), 4));
+    }
+
+    @Test
+    public void testPart2ExampleData() {
+        Assert.assertEquals(19, tuning.findFirstMarker("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 14));
+        Assert.assertEquals(23, tuning.findFirstMarker("bvwbjplbgvbhsrlpgdmjqwftvncz", 14));
+        Assert.assertEquals(23, tuning.findFirstMarker("nppdvjthqldpwncqszvftbrmjlhg", 14));
+        Assert.assertEquals(29, tuning.findFirstMarker("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 14));
+        Assert.assertEquals(26, tuning.findFirstMarker("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 14));
+    }
+
+    @Test
+    public void testPart2() throws IOException {
+        List<String> input = getInput(TEST_INPUT);
+        Assert.assertEquals(1, input.size());
+        Assert.assertEquals(3613, tuning.findFirstMarker(input.get(0), 14));
     }
 
 }
