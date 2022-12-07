@@ -6,6 +6,8 @@ import java.util.List;
 import static dev.kearls.Common.getInput;
 
 public class NoSpaceLeft {
+    public static final Integer TOTAL_SPACE_AVAILABLE=70000000;
+    public static final Integer NEEDED_FOR_UPDATE=30000000;
     public Directory processInput(List<String> lines) {
         Directory root = new Directory("/", null);
         Directory currentDirectory = root;
@@ -14,7 +16,7 @@ public class NoSpaceLeft {
         String line = lines.get(index);
         while(index < lines.size()) {
             if (line.charAt(0) == '$') {
-                // So far commands can only be cd or ls...
+                // Commands can only be cd or ls...
                 String command = line.substring(2, 4);
                 switch (command) {
                     case "cd":
@@ -28,7 +30,7 @@ public class NoSpaceLeft {
                         line = lines.get(index);
                         break;
                     case "ls":
-                        // Get everything till EOF or $
+                        // Get everything till EOF or the next $
                         index++;
                         while (index < lines.size()) {
                             line = lines.get(index);
