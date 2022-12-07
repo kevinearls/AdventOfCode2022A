@@ -61,31 +61,18 @@ public class TestNoSpaceLeft {
     @Test
     public void testPart2Example() throws IOException {
         List<String> commands = getInput(EXAMPLE_INPUT);
-        Directory tree = solver.processInput(commands);
-
-        // TODO build a List<Integer> of sizes, and then sort them
-        directorySizes = new ArrayList<>();
-        addDirectorySizesToList(tree);
-        Collections.sort(directorySizes);
-        var totalUsedDiskSpace = directorySizes.get(directorySizes.size() - 1);
-        var freeSpace = NoSpaceLeft.TOTAL_SPACE_AVAILABLE - totalUsedDiskSpace;
-        var neededForUpdate = NoSpaceLeft.NEEDED_FOR_UPDATE - freeSpace;
-        System.out.println("Total: " + totalUsedDiskSpace + " Free: " + freeSpace + " Needed: " + neededForUpdate);
-
-        for (Integer i : directorySizes) {
-            if (i > neededForUpdate) {
-                System.out.println("Got one: " + i);
-                assertEquals(24933642, i);
-                return;
-            }
-        }
-
-        // TODO if we get to here we fail...
+        var result = testSecondPart(commands);
+        assertEquals(24933642, result);
     }
 
     @Test
     public void testPart2() throws IOException {
         List<String> commands = getInput(TEST_INPUT);
+        var result = testSecondPart(commands);
+        assertEquals(2877389, result);
+    }
+
+    public int testSecondPart(List<String> commands) {
         Directory tree = solver.processInput(commands);
 
         directorySizes = new ArrayList<>();
@@ -96,17 +83,16 @@ public class TestNoSpaceLeft {
         var neededForUpdate = NoSpaceLeft.NEEDED_FOR_UPDATE - freeSpace;
         System.out.println("Total: " + totalUsedDiskSpace + " Free: " + freeSpace + " Needed: " + neededForUpdate);
 
+        // Find the first directory bigger than need free space
         for (Integer i : directorySizes) {
             if (i > neededForUpdate) {
-                System.out.println("Got one: " + i);
-                assertEquals(2877389, i);
-                return;
+                return i;
             }
         }
 
-        // TODO if we get to here we fail...
+        // If we fell thru then something is wrong
+        return -1;
     }
-
 
     public void sumAllDirectories(Directory directory) {
         var directorySize = directory.getTotalSizeOfFiles();
