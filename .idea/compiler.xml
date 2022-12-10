@@ -8,12 +8,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Day2" />
         <module name="Day3" />
+        <module name="Day10" />
         <module name="Day4" />
         <module name="Day5" />
         <module name="Day6" />
         <module name="Day7" />
         <module name="Day8" />
+        <module name="Day9" />
         <module name="Common" />
+        <module name="Other" />
       </profile>
     </annotationProcessing>
   </component>
