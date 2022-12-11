@@ -19,4 +19,17 @@ public class TestCathodeRayTube {
         assertEquals(13760, crt.calculateSignalStrength(TEST_INPUT));
     }
 
+    @Test
+    public void testPart2Example() throws IOException {
+        crt.drawSomething(EXAMPLE_INPUT);
+    }
+
+    @Test
+    public void testPart2() throws IOException {
+        crt.drawSomething(TEST_INPUT);
+
+        // Draws RFKZCPEF
+    }
+
+
 }
